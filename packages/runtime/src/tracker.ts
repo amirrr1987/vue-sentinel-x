@@ -1,3 +1,4 @@
+import type { MemoryWarning } from "./memory/types.js";
 import type {
   ComponentLifecycleRecord,
   LifecycleEvent,
@@ -50,6 +51,20 @@ export class LifecycleTracker {
     }
 
     return record;
+  }
+
+  attachMemoryWarnings(
+    instance: object,
+    warnings: MemoryWarning[],
+  ): void {
+    const id = this.instanceToId.get(instance);
+    if (!id || warnings.length === 0) {
+      return;
+    }
+    const record = this.records.get(id);
+    if (record) {
+      record.memoryWarnings = warnings;
+    }
   }
 
   markUnmounted(
