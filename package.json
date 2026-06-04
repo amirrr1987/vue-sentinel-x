@@ -1,6 +1,16 @@
 {
   "name": "vue-sentinel-x",
   "private": true,
+  "version": "0.0.1",
+  "description": "A Vue.js performance monitoring tool",
+  "author": "Amir Maghami",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amirrr1987/vue-sentinel-x.git"
+  },
+  "homepage": "https://github.com/amirrr1987/vue-sentinel-x",
+  "bugs": {
   "type": "module",
   "workspaces": ["packages/*"],
   "scripts": {

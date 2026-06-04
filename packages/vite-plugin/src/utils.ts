@@ -6,3 +6,8 @@ export function normalizeModuleId(id: string): string {
 export function isVueModule(id: string): boolean {
   return normalizeModuleId(id).endsWith(".vue");
 }
+
+/** True for the main `.vue` module, not Vite virtual blocks (`?vue&type=script`). */
+export function isMainVueModule(id: string): boolean {
+  return !id.includes("?") && isVueModule(id);
+}
