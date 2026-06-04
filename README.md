@@ -15,12 +15,12 @@ Performance and health monitoring for Vue 3 apps — static component graphs, ru
 
 ### 1. Install
 
-From your app directory (monorepo: link workspace packages, or publish to npm when ready):
-
 ```bash
-bun add -D @vue-sentinel-x/vite-plugin
-bun add @vue-sentinel-x/runtime
+npm install -D @vue-sentinel-x/vite-plugin
+npm install @vue-sentinel-x/runtime
 ```
+
+Monorepo development: use workspace packages. For publishing, see [PUBLISHING.md](./PUBLISHING.md).
 
 ### 2. Vite config
 
@@ -193,6 +193,10 @@ bun run dashboard:dev  # dashboard UI
 - Runtime patches install only when `features.memory` / `performance` are on.  
 - Use `performance.quiet: true` and `logFiles: false` in everyday dev.
 
+## Publishing
+
+See [PUBLISHING.md](./PUBLISHING.md) for npm release steps.
+
 ## License
 
-MIT
+MIT — see [LICENSE](./LICENSE).

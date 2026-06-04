@@ -1,28 +1,59 @@
 {
   "name": "@vue-sentinel-x/vite-plugin",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "description": "Vite plugin for Vue SFC analysis, component graphs, and sentinel reports",
   "type": "module",
+  "license": "MIT",
+  "author": "Amir Maghami",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amirrr1987/vue-sentinel-x.git",
+    "directory": "packages/vite-plugin"
+  },
+  "homepage": "https://github.com/amirrr1987/vue-sentinel-x#readme",
+  "bugs": {
+    "url": "https://github.com/amirrr1987/vue-sentinel-x/issues"
+  },
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "vue",
+    "vue3",
+    "sfc",
+    "analysis",
+    "dependency-graph"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": ["dist", "README.md"],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "vite": "^5.4.0 || ^6.0.0 || ^7.0.0"
   },
   "dependencies": {
-    "@vue-sentinel-x/core": "workspace:*",
+    "@vue-sentinel-x/core": "^0.0.1",
     "@vue/compiler-sfc": "^3.5.16",
     "typescript": "^5.8.3"
   },
   "devDependencies": {
+    "@vue-sentinel-x/core": "workspace:*",
     "@types/node": "^22.15.21",
+    "typescript": "^5.8.3",
     "vite": "^6.3.5"
   }
 }
