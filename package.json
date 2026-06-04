@@ -1,0 +1,13 @@
+{
+  "name": "vue-sentinel-x",
+  "private": true,
+  "type": "module",
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "build": "bun run --filter '@vue-sentinel-x/*' build",
+    "typecheck": "bun run --filter '@vue-sentinel-x/*' typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
