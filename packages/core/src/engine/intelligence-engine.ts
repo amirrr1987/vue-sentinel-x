@@ -1,10 +1,17 @@
+import { formatLearningReport, formatLearningReportText } from "../format/learning.js";
 import { formatReport, formatReportText } from "../format/messages.js";
+import { enrichFindings } from "../learning/enrich.js";
 import { defaultRules } from "../rules/index.js";
 import type { SentinelRule } from "../rules/types.js";
 import type { IntelligenceContext, IntelligenceReport, RuleFinding } from "../types.js";
 
 export type IntelligenceEngineOptions = {
   rules?: SentinelRule[];
+  /**
+   * When true, adds lessons with bad/good examples for each finding.
+   * Ideal for junior developers learning while coding.
+   */
+  learningMode?: boolean;
 };
 
 /**
@@ -12,9 +19,11 @@ export type IntelligenceEngineOptions = {
  */
 export class IntelligenceEngine {
   private readonly rules: SentinelRule[];
+  private readonly learningMode: boolean;
 
   constructor(options: IntelligenceEngineOptions = {}) {
     this.rules = options.rules ?? defaultRules;
+    this.learningMode = options.learningMode ?? false;
   }
 
   analyze(context: IntelligenceContext): IntelligenceReport {
@@ -22,17 +31,31 @@ export class IntelligenceEngine {
     const deduped = dedupeFindings(findings);
     const { messages, summary } = formatReport(deduped);
 
-    return {
+    const report: IntelligenceReport = {
       generatedAt: new Date().toISOString(),
       findings: deduped,
       messages,
       summary,
     };
+
+    if (this.learningMode) {
+      const learningFindings = enrichFindings(deduped);
+      const learning = formatLearningReport(learningFindings);
+      report.learningMode = true;
+      report.learningFindings = learningFindings;
+      report.learningMessages = learning.messages;
+      report.learningSummary = learning.summary;
+    }
+
+    return report;
   }
 
   /** Same as {@link analyze} but returns one printable string. */
   analyzeText(context: IntelligenceContext): string {
     const report = this.analyze(context);
+    if (report.learningMode && report.learningFindings) {
+      return formatLearningReportText(report.learningFindings);
+    }
     return formatReportText(report.findings) === report.summary
       ? report.summary
       : formatReportText(report.findings);
@@ -40,11 +63,24 @@ export class IntelligenceEngine {
 
   log(context: IntelligenceContext, prefix = "[vue-sentinel-x]"): IntelligenceReport {
     const report = this.analyze(context);
+
+    if (report.learningMode && report.learningMessages) {
+      console.log(`${prefix} ${report.learningSummary ?? report.summary}`);
+      for (const message of report.learningMessages) {
+        console.log(`${prefix}\n${message}`);
+      }
+      return report;
+    }
+
     console.log(`${prefix} ${report.summary}`);
     for (const message of report.messages) {
       console.log(`${prefix}\n${message}`);
     }
     return report;
+  }
+
+  isLearningModeEnabled(): boolean {
+    return this.learningMode;
   }
 
   getRules(): readonly SentinelRule[] {

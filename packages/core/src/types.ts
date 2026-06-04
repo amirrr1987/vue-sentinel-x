@@ -87,4 +87,11 @@ export type IntelligenceReport = {
   /** Human-readable lines ready to print or show in a UI */
   messages: string[];
   summary: string;
+  /** Present when Learning Mode is enabled */
+  learningMode?: boolean;
+  /** Findings with lessons (what / why / fix + examples) */
+  learningFindings?: import("./learning/types.js").FindingWithLearning[];
+  /** Learning Mode formatted messages */
+  learningMessages?: string[];
+  learningSummary?: string;
 };

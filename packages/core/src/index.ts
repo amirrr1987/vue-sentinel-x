@@ -33,6 +33,20 @@ export {
   formatReport,
   formatReportText,
 } from "./format/messages.js";
+export {
+  formatLearningFinding,
+  formatLearningReport,
+  formatLearningReportText,
+} from "./format/learning.js";
+export {
+  enrichFinding,
+  enrichFindings,
+  getLearningLesson,
+  getAllLearningRuleIds,
+  type CodeExample,
+  type FindingWithLearning,
+  type LearningLesson,
+} from "./learning/index.js";
 
 export {
   defaultRules,
@@ -43,5 +57,8 @@ export {
   type SentinelRule,
 } from "./rules/index.js";
 
-/** Default singleton engine with all built-in rules. */
+/** Default engine (standard messages). */
 export const intelligenceEngine = new IntelligenceEngine();
+
+/** Engine with Learning Mode on — lessons + bad/good examples. */
+export const learningEngine = new IntelligenceEngine({ learningMode: true });
