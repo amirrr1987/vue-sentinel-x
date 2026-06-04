@@ -1,7 +1,7 @@
 import {
   buildIntelligenceContext,
   intelligenceEngine,
-} from "@vue-sentinel-x/core";
+} from "@vue-sentinel-x/core/browser";
 import type { SentinelSnapshot } from "../types.js";
 
 const graph = {

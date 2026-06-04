@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RuleFinding, RuleSeverity } from "@vue-sentinel-x/core";
+import type { RuleFinding, RuleSeverity } from "@vue-sentinel-x/core/browser";
 
 defineProps<{
   summary: string;

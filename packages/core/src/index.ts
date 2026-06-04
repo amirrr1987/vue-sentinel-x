@@ -24,6 +24,28 @@ export {
 } from "./context/build-context.js";
 
 export {
+  resolveConfig,
+  isFeatureEnabled,
+  DEFAULT_CONFIG,
+  DEFAULT_OUTPUT_DIR,
+  type SentinelConfig,
+  type ResolvedSentinelConfig,
+  type SentinelFeatureFlags,
+  type SentinelReportConfig,
+} from "./config/index.js";
+
+export {
+  buildSentinelReport,
+  writeJsonReport,
+  writeHtmlReport,
+  writeReports,
+  renderHtmlReport,
+  type BuildReportInput,
+  type SentinelReportFile,
+  type RuntimeReportSection,
+} from "./report/index.js";
+
+export {
   IntelligenceEngine,
   type IntelligenceEngineOptions,
 } from "./engine/intelligence-engine.js";

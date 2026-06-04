@@ -1,4 +1,5 @@
 import type { App, ComponentPublicInstance, Plugin } from "vue";
+import { resolveConfig, type SentinelConfig } from "@vue-sentinel-x/core";
 import { resolveComponentName } from "./component-name.js";
 import { createComponentId } from "./id.js";
 import {
@@ -10,10 +11,15 @@ import { prepareSentinelRuntime } from "./memory/prepare.js";
 import { sentinelMemory } from "./memory/memory-tracker.js";
 import type { PerformanceTracker } from "./performance/performance-tracker.js";
 import { sentinelPerformance } from "./performance/performance-tracker.js";
+import { exposeRuntimeBridge } from "./snapshot.js";
 import { sentinelTracker, type LifecycleTracker } from "./tracker.js";
-import type { SentinelRuntimeOptions } from "./types.js";
+import type { PerformanceThresholds } from "./performance/thresholds.js";
 
 export type SentinelVuePlugin = Plugin;
+
+export type SentinelRuntimeOptions = Partial<SentinelConfig> & {
+  performanceThresholds?: Partial<PerformanceThresholds>;
+};
 
 export function createSentinelPlugin(
   options: SentinelRuntimeOptions = {},
@@ -21,26 +27,36 @@ export function createSentinelPlugin(
   memory: MemoryTracker = sentinelMemory,
   performance: PerformanceTracker = sentinelPerformance,
 ): SentinelVuePlugin {
-  const {
-    logLifecycle = true,
-    detectMemoryLeaks = true,
-    logMemoryWarnings = true,
-    trackPerformance = true,
-    logSlowComponents = true,
-    logTopSlowIntervalMs = false,
-    performanceThresholds,
-  } = options;
+  const config = resolveConfig(options);
+  const thresholds = options.performanceThresholds;
+
+  if (!config.enabled || !config.features.runtime) {
+    return { install() {} };
+  }
+
+  const lifecycleOn = config.features.lifecycle;
+  const memoryOn = config.features.memory;
+  const perfOn = config.features.performance;
+
+  const logLifecycle = config.logLifecycle ?? false;
+  const detectMemoryLeaks = memoryOn && (config.detectMemoryLeaks ?? true);
+  const logMemoryWarnings = config.logMemoryWarnings ?? true;
+  const trackPerformance = perfOn && (config.trackPerformance ?? true);
+  const logSlowComponents = config.logSlowComponents ?? false;
+  const logTopSlowIntervalMs = config.logTopSlowIntervalMs ?? false;
 
   let topSlowInterval: ReturnType<typeof setInterval> | undefined;
 
   return {
     install(app: App) {
+      exposeRuntimeBridge();
+
       if (detectMemoryLeaks) {
         prepareSentinelRuntime(tracker, memory);
       }
 
       if (trackPerformance) {
-        performance.configure(performanceThresholds);
+        performance.configure(thresholds);
         performance.start(true);
       }
 
@@ -52,6 +68,9 @@ export function createSentinelPlugin(
 
       app.mixin({
         beforeCreate(this: ComponentPublicInstance) {
+          if (!lifecycleOn && !memoryOn && !perfOn) {
+            return;
+          }
           enterComponentScope(this);
           const componentId = createComponentId();
           const name = resolveComponentName(this);
@@ -75,7 +94,9 @@ export function createSentinelPlugin(
           if (trackPerformance) {
             performance.endMount(this);
           }
-          tracker.markMounted(this, logLifecycle);
+          if (lifecycleOn) {
+            tracker.markMounted(this, logLifecycle);
+          }
           if (detectMemoryLeaks) {
             memory.onMounted(this);
           }
@@ -98,7 +119,9 @@ export function createSentinelPlugin(
           if (detectMemoryLeaks) {
             memory.onUnmounted(this, logMemoryWarnings);
           }
-          tracker.markUnmounted(this, logLifecycle);
+          if (lifecycleOn) {
+            tracker.markUnmounted(this, logLifecycle);
+          }
           exitComponentScope(this);
 
           if (trackPerformance && logSlowComponents) {
@@ -124,7 +147,6 @@ export function createSentinelPlugin(
             clearInterval(topSlowInterval);
           }
           if (trackPerformance) {
-            performance.logTopSlowComponents();
             performance.stop();
           }
         });

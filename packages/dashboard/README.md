@@ -6,10 +6,12 @@ Vue 3 dev dashboard for component graphs, memory, performance, and Intelligence 
 
 ```bash
 bun install
-bun run --filter @vue-sentinel-x/dashboard dev
+bun run dashboard:dev
 ```
 
 Open http://localhost:5174
+
+To load reports from your app, enable `fetchLiveGraph` in `useSentinelData` and proxy `/analysis` to your Vite dev server in `vite.config.ts`.
 
 ## Data flow (plugin → UI)
 
@@ -31,9 +33,9 @@ Open http://localhost:5174
 ```
 
 1. **Vite plugin** scans `.vue` files and writes `analysis/component-graph.json`.
-2. **Runtime** tracks lifecycle, memory, and performance in the app (live data TBD via dev bridge).
+2. **Runtime** tracks lifecycle, memory, and performance; exposes `window.__VUE_SENTINEL_X__.captureSnapshot()`.
 3. **Core** runs rules on a merged snapshot → issues with problem / suggestion / explanation.
-4. **Dashboard** loads the snapshot (mock today, live graph optional) and renders panels.
+4. **Dashboard** loads mock data, or fetches `analysis/sentinel-report.json` when `fetchLiveGraph: true`.
 
 ## Adapters
 

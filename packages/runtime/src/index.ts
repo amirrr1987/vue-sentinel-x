@@ -1,17 +1,19 @@
-import { createSentinelPlugin } from "./plugin.js";
-import { sentinelMemory } from "./memory/memory-tracker.js";
+import { resolveConfig, type SentinelConfig } from "@vue-sentinel-x/core";
+import { createSentinelPlugin, type SentinelRuntimeOptions } from "./plugin.js";
 import { prepareSentinelRuntime } from "./memory/prepare.js";
+import { sentinelMemory } from "./memory/memory-tracker.js";
 import { sentinelPerformance } from "./performance/performance-tracker.js";
 import { sentinelTracker } from "./tracker.js";
-import type { SentinelRuntime, SentinelRuntimeOptions } from "./types.js";
+import type { SentinelRuntime } from "./types.js";
 
 export type {
   ComponentLifecycleRecord,
   LifecycleEvent,
   LifecycleEventType,
   SentinelRuntime,
-  SentinelRuntimeOptions,
 } from "./types.js";
+
+export type { SentinelRuntimeOptions } from "./plugin.js";
 
 export type {
   ComponentResourceBundle,
@@ -60,16 +62,19 @@ export {
   DEFAULT_LONG_TASK_MS,
   DEFAULT_TOP_SLOW_COUNT,
 } from "./performance/index.js";
+export { captureRuntimeSnapshot, exposeRuntimeBridge } from "./snapshot.js";
 
 /** Create the runtime plugin + global tracker API. */
 export function createRuntime(
   options: SentinelRuntimeOptions = {},
 ): SentinelRuntime {
-  if (options.detectMemoryLeaks !== false) {
+  const config = resolveConfig(options);
+
+  if (config.enabled && config.features.memory) {
     prepareSentinelRuntime(sentinelTracker, sentinelMemory);
   }
 
-  if (options.trackPerformance !== false) {
+  if (config.enabled && config.features.performance) {
     sentinelPerformance.configure(options.performanceThresholds);
   }
 
@@ -80,3 +85,5 @@ export function createRuntime(
     performance: sentinelPerformance,
   };
 }
+
+export type { SentinelConfig };

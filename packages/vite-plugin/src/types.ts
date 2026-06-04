@@ -1,19 +1,4 @@
-export type VueSentinelXPluginOptions = {
-  /** When true, logs every module that passes through the plugin. Default: true */
-  logFiles?: boolean;
-  /** When true, logs the component dependency graph to the console. Default: true */
-  logGraph?: boolean;
-  /**
-   * Path to the JSON graph file, relative to the Vite project root.
-   * Set to `false` to disable writing. Default: `analysis/component-graph.json`
-   */
-  graphOutput?: string | false;
-  /**
-   * When true, scans the project for `.vue` files on dev server start and build.
-   * Default: true
-   */
-  graphScan?: boolean;
-};
+export type { SentinelConfig as VueSentinelXPluginOptions } from "@vue-sentinel-x/core";
 
 export type ProcessedModule = {
   id: string;

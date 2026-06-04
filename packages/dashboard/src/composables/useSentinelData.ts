@@ -1,8 +1,43 @@
 import { ref, shallowRef, type Ref } from "vue";
+import type { SentinelReportFile } from "@vue-sentinel-x/core/browser";
 import { createMockSnapshot } from "../data/mock-snapshot.js";
 import type { SentinelSnapshot } from "../types.js";
 
+function reportToSnapshot(report: SentinelReportFile): SentinelSnapshot {
+  return {
+    source: "live",
+    projectRoot: report.meta.projectRoot,
+    generatedAt: report.meta.generatedAt,
+    componentGraph: report.componentGraph ?? {
+      components: [],
+    },
+    memory: {
+      usedMB: (report.runtime?.memory?.heap?.usedJSHeapSize ?? 0) / 1024 / 1024,
+      totalMB: (report.runtime?.memory?.heap?.totalJSHeapSize ?? 0) / 1024 / 1024,
+      limitMB: (report.runtime?.memory?.heap?.jsHeapSizeLimit ?? 0) / 1024 / 1024,
+      history: [{ label: "now", usedMB: 0 }],
+      warnings: report.runtime?.memory?.warnings ?? [],
+    },
+    performance: {
+      records: (report.runtime?.performance?.records ?? []).map((r) => ({
+        componentId: r.name,
+        name: r.name,
+        mountDurationMs: r.mountDurationMs,
+        updates: {
+          count: r.updateCount,
+          avgMs: r.avgUpdateMs,
+          maxMs: r.avgUpdateMs,
+        },
+      })),
+      longTaskCount: report.runtime?.performance?.longTaskCount ?? 0,
+      slowComponentCount: report.runtime?.performance?.slowComponentCount ?? 0,
+    },
+    report: report.intelligence,
+  };
+}
+
 const GRAPH_URL = "/analysis/component-graph.json";
+const REPORT_URL = "/analysis/sentinel-report.json";
 
 export type UseSentinelDataOptions = {
   /** Try to load live graph JSON from the Vite plugin output */
@@ -27,17 +62,22 @@ export function useSentinelData(options: UseSentinelDataOptions = {}) {
       let data = createMockSnapshot();
 
       if (options.fetchLiveGraph) {
-        const live = await tryFetchGraph();
-        if (live) {
-          data = {
-            ...data,
-            source: "live",
-            componentGraph: {
-              components: live.components,
-              sharedComponents: live.sharedComponents,
-              meta: live.meta,
-            },
-          };
+        const liveReport = await tryFetchReport();
+        if (liveReport) {
+          data = reportToSnapshot(liveReport);
+        } else {
+          const live = await tryFetchGraph();
+          if (live) {
+            data = {
+              ...data,
+              source: "live",
+              componentGraph: {
+                components: live.components,
+                sharedComponents: live.sharedComponents,
+                meta: live.meta,
+              },
+            };
+          }
         }
       }
 
@@ -56,6 +96,18 @@ export function useSentinelData(options: UseSentinelDataOptions = {}) {
     load,
     refresh: load,
   };
+}
+
+async function tryFetchReport(): Promise<SentinelReportFile | null> {
+  try {
+    const res = await fetch(REPORT_URL);
+    if (!res.ok) {
+      return null;
+    }
+    return (await res.json()) as SentinelReportFile;
+  } catch {
+    return null;
+  }
 }
 
 async function tryFetchGraph(): Promise<{

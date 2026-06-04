@@ -1,6 +1,12 @@
 import { join } from "node:path";
+import {
+  buildSentinelReport,
+  isFeatureEnabled,
+  resolveConfig,
+  writeReports,
+  type SentinelConfig,
+} from "@vue-sentinel-x/core";
 import type { Plugin, ViteDevServer } from "vite";
-import type { ViteResolveContext } from "./resolve/resolve-import.js";
 import { normalizePath } from "vite";
 import { AnalysisStore } from "./cache/analysis-store.js";
 import { syncProjectGraph } from "./discovery/sync-project.js";
@@ -11,44 +17,56 @@ import type {
   DependencyGraph,
   ProcessedModule,
   VueFileAnalysis,
-  VueSentinelXPluginOptions,
 } from "./types.js";
 import { isMainVueModule, isVueModule } from "./utils.js";
 
 export const PLUGIN_NAME = "vue-sentinel-x";
 export const DEFAULT_GRAPH_OUTPUT = "analysis/component-graph.json";
 
-const FLUSH_DEBOUNCE_MS = 200;
+export type VueSentinelXPluginOptions = SentinelConfig;
 
 export type {
   ComponentGraphFile,
   DependencyGraph,
   ProcessedModule,
   VueFileAnalysis,
-  VueSentinelXPluginOptions,
 };
 
 export { analyzeVueFile } from "./analysis/analyze-vue-file.js";
 export { AnalysisStore } from "./cache/analysis-store.js";
 export { DependencyGraphBuilder } from "./graph/index.js";
+export { resolveConfig, type SentinelConfig } from "@vue-sentinel-x/core";
 
 export function vueSentinelX(
   options: VueSentinelXPluginOptions = {},
 ): Plugin {
-  const {
-    logFiles = true,
-    logGraph = true,
-    graphOutput = DEFAULT_GRAPH_OUTPUT,
-    graphScan = true,
-  } = options;
+  const config = resolveConfig(options);
+  const graphEnabled = isFeatureEnabled(config, "graph");
+  const intelligenceEnabled = isFeatureEnabled(config, "intelligence");
+  const reportsEnabled =
+    config.enabled && config.reports.enabled && config.features.reports;
+
+  const logFiles = !config.performance.quiet && (config.logFiles ?? false);
+  const logGraph = config.logGraph ?? true;
+  const graphOutput = graphEnabled ? config.graphOutput : false;
+  const graphScan = graphEnabled && (config.graphScan ?? true);
+  const debounceMs = config.performance.graphDebounceMs ?? 250;
 
   const store = new AnalysisStore();
   let projectRoot = process.cwd();
-  let outputPath = join(projectRoot, DEFAULT_GRAPH_OUTPUT);
+  let outputDir = join(projectRoot, config.reports.outputDir);
+  let graphPath = graphOutput
+    ? join(projectRoot, graphOutput)
+    : join(projectRoot, DEFAULT_GRAPH_OUTPUT);
   let flushTimer: ReturnType<typeof setTimeout> | undefined;
   let flushInFlight: Promise<void> | undefined;
-  let pluginContext: ViteResolveContext | undefined;
+  let pluginContext: import("./resolve/resolve-import.js").ViteResolveContext | undefined;
   let scanPromise: Promise<void> | undefined;
+  let lastGraph: ComponentGraphFile | undefined;
+
+  if (!config.enabled) {
+    return { name: PLUGIN_NAME };
+  }
 
   const flushGraph = async (): Promise<void> => {
     if (!graphOutput || store.componentCount === 0) {
@@ -59,11 +77,40 @@ export function vueSentinelX(
       ? createViteResolver(pluginContext)
       : undefined;
     const graph = await store.buildGraph(projectRoot, resolvePath);
-    await writeComponentGraph(outputPath, graph);
+    lastGraph = graph;
+    await writeComponentGraph(graphPath, graph);
 
     if (logGraph) {
       console.log(
-        `[${PLUGIN_NAME}] wrote ${graph.meta.componentCount} components, ${graph.meta.edgeCount} edges, ${graph.meta.sharedCount} shared → ${outputPath}`,
+        `[${PLUGIN_NAME}] graph: ${graph.meta.componentCount} components → ${graphPath}`,
+      );
+    }
+  };
+
+  const writeAnalysisReports = async (): Promise<void> => {
+    if (!reportsEnabled || !intelligenceEnabled) {
+      return;
+    }
+
+    const report = buildSentinelReport({
+      projectRoot,
+      source: "build",
+      componentGraph: lastGraph,
+      learningMode: config.features.learningMode,
+    });
+
+    const paths = await writeReports({
+      outputDir,
+      report,
+      json: config.reports.json,
+      html: config.reports.html,
+      jsonFilename: config.reports.jsonFilename,
+      htmlFilename: config.reports.htmlFilename,
+    });
+
+    if (logGraph && (paths.jsonPath || paths.htmlPath)) {
+      console.log(
+        `[${PLUGIN_NAME}] reports: ${[paths.jsonPath, paths.htmlPath].filter(Boolean).join(", ")}`,
       );
     }
   };
@@ -80,7 +127,7 @@ export function vueSentinelX(
       flushInFlight = flushGraph().finally(() => {
         flushInFlight = undefined;
       });
-    }, FLUSH_DEBOUNCE_MS);
+    }, debounceMs);
   };
 
   const runInitialScan = (): Promise<void> => {
@@ -100,6 +147,10 @@ export function vueSentinelX(
   };
 
   const setupWatcher = (server: ViteDevServer): void => {
+    if (!graphEnabled) {
+      return;
+    }
+
     const handlePath = (file: string): string => normalizePath(file);
 
     server.watcher.on("unlink", (file) => {
@@ -128,44 +179,45 @@ export function vueSentinelX(
     name: PLUGIN_NAME,
     enforce: "pre",
 
-    configResolved(config) {
-      projectRoot = config.root;
-      outputPath = graphOutput
+    configResolved(resolved) {
+      projectRoot = resolved.root;
+      outputDir = join(projectRoot, config.reports.outputDir);
+      graphPath = graphOutput
         ? join(projectRoot, graphOutput)
         : join(projectRoot, DEFAULT_GRAPH_OUTPUT);
     },
 
     async buildStart() {
+      if (!graphEnabled) {
+        return;
+      }
       pluginContext = this;
       await runInitialScan();
     },
 
     configureServer(server) {
-      void runInitialScan().then(() => {
-        if (store.componentCount > 0) {
-          scheduleFlush();
-        }
-      });
+      if (!graphEnabled) {
+        return;
+      }
+      void runInitialScan();
       setupWatcher(server);
     },
 
     transform(code, id) {
+      if (!graphEnabled) {
+        return null;
+      }
+
       pluginContext ??= this;
 
-      const module: ProcessedModule = {
-        id,
-        isVue: isVueModule(id),
-      };
-
       if (logFiles) {
-        const label = module.isVue ? "vue" : "module";
+        const label = isVueModule(id) ? "vue" : "module";
         console.log(`[${PLUGIN_NAME}] ${label}: ${id}`);
       }
 
       if (isMainVueModule(id)) {
         const filePath = normalizePath(id);
-        const changed = store.analyzeIfChanged(filePath, code);
-        if (changed) {
+        if (store.analyzeIfChanged(filePath, code)) {
           scheduleFlush();
         }
       }
@@ -174,11 +226,13 @@ export function vueSentinelX(
     },
 
     handleHotUpdate(ctx) {
+      if (!graphEnabled) {
+        return;
+      }
       const file = normalizePath(ctx.file);
       if (!file.endsWith(".vue")) {
         return;
       }
-      // Drop cache only; transform re-parses and schedules a graph write.
       store.invalidate(file);
       return ctx.modules;
     },
@@ -191,7 +245,10 @@ export function vueSentinelX(
       if (flushInFlight) {
         await flushInFlight;
       }
-      await flushGraph();
+      if (graphEnabled) {
+        await flushGraph();
+      }
+      await writeAnalysisReports();
     },
   };
 }
