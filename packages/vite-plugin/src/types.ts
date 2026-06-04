@@ -3,6 +3,16 @@ export type VueSentinelXPluginOptions = {
   logFiles?: boolean;
   /** When true, logs the component dependency graph to the console. Default: true */
   logGraph?: boolean;
+  /**
+   * Path to the JSON graph file, relative to the Vite project root.
+   * Set to `false` to disable writing. Default: `analysis/component-graph.json`
+   */
+  graphOutput?: string | false;
+  /**
+   * When true, scans the project for `.vue` files on dev server start and build.
+   * Default: true
+   */
+  graphScan?: boolean;
 };
 
 export type ProcessedModule = {
@@ -21,6 +31,8 @@ export type ImportedComponentRef = {
   localName: string;
   /** Raw module specifier from the import */
   specifier: string;
+  /** Resolved absolute path when available */
+  resolvedPath?: string;
 };
 
 export type VueFileAnalysis = {
@@ -35,16 +47,44 @@ export type ComponentNode = {
   name: string;
   importedComponents: ImportedComponentRef[];
   structure: VueFileStructure;
+  /** Resolved child component paths (parent → child) */
+  children: string[];
+  /** Resolved parent component paths */
+  parents: string[];
 };
 
 export type ComponentEdge = {
+  /** Parent component (importer) */
   from: string;
+  /** Child component (imported `.vue`) */
   to: string;
   /** Local import name used in the parent component */
   via?: string;
 };
 
+export type SharedComponent = {
+  id: string;
+  name: string;
+  /** Parent component paths that import this shared child */
+  usedBy: string[];
+  usageCount: number;
+};
+
 export type DependencyGraph = {
   components: ComponentNode[];
   edges: ComponentEdge[];
+};
+
+export type ComponentGraphMeta = {
+  generatedAt: string;
+  projectRoot: string;
+  componentCount: number;
+  edgeCount: number;
+  sharedCount: number;
+};
+
+/** Serialized graph written to `analysis/component-graph.json` */
+export type ComponentGraphFile = DependencyGraph & {
+  meta: ComponentGraphMeta;
+  sharedComponents: SharedComponent[];
 };

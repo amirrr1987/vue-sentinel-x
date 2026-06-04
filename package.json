@@ -10,7 +10,6 @@
     "url": "https://github.com/amirrr1987/vue-sentinel-x.git"
   },
   "homepage": "https://github.com/amirrr1987/vue-sentinel-x",
-  "bugs": {
   "type": "module",
   "workspaces": ["packages/*"],
   "scripts": {
