@@ -14,7 +14,8 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "build": "bun run --filter '@vue-sentinel-x/*' build",
-    "typecheck": "bun run --filter '@vue-sentinel-x/*' typecheck"
+    "typecheck": "bun run --filter '@vue-sentinel-x/*' typecheck",
+    "dashboard:dev": "bun run --filter @vue-sentinel-x/dashboard dev"
   },
   "devDependencies": {
     "typescript": "^5.8.3"
