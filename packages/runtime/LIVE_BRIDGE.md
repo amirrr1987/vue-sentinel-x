@@ -18,7 +18,7 @@ createLiveBridge()  ────────► useLiveBridge()
 ## ۱. نصب در اپ Vue شما
 
 ```bash
-bun add @amirrr1987/vue-sentinel-x-runtime
+bun add vue-sentinel-x-runtime
 ```
 
 ## ۲. تنظیم `main.ts`
@@ -26,7 +26,7 @@ bun add @amirrr1987/vue-sentinel-x-runtime
 ```ts
 import { createApp } from "vue";
 import App from "./App.vue";
-import { createRuntime, createLiveBridge } from "@amirrr1987/vue-sentinel-x-runtime";
+import { createRuntime, createLiveBridge } from "vue-sentinel-x-runtime";
 
 // Runtime plugin (lifecycle + memory + performance tracking)
 const { plugin } = createRuntime({
@@ -57,12 +57,13 @@ Dashboard روی `http://localhost:5174` باز می‌شه.
 
 ## ۴. باز کردن هر دو تب
 
-| تب | آدرس |
-|----|------|
-| اپ شما | `http://localhost:5173` (یا هر پورت Vite) |
-| Dashboard | `http://localhost:5174` |
+| تب        | آدرس                                      |
+| --------- | ----------------------------------------- |
+| اپ شما    | `http://localhost:5173` (یا هر پورت Vite) |
+| Dashboard | `http://localhost:5174`                   |
 
 وقتی هر دو در مرورگر باز باشن، dashboard به صورت **real-time** آپدیت می‌شه:
+
 - 🟢 **Live** — داده زنده دریافت می‌شه
 - 🟡 **Waiting** — منتظر اپ
 - 🔴 **App closed** — تب اپ بسته شده
@@ -73,8 +74,8 @@ Dashboard روی `http://localhost:5174` باز می‌شه.
 
 ```ts
 createLiveBridge({
-  intervalMs: 1000,   // فاصله ارسال snapshot (ms) — پیش‌فرض: 1000
-  autoStart: true,    // شروع خودکار — پیش‌فرض: true
+  intervalMs: 1000, // فاصله ارسال snapshot (ms) — پیش‌فرض: 1000
+  autoStart: true, // شروع خودکار — پیش‌فرض: true
 });
 ```
 
@@ -83,9 +84,9 @@ createLiveBridge({
 ```ts
 const bridge = createLiveBridge({ autoStart: false });
 
-bridge.start();   // شروع ارسال
-bridge.stop();    // توقف
-bridge.flush();   // ارسال فوری یک snapshot (مثلاً بعد از یک action)
+bridge.start(); // شروع ارسال
+bridge.stop(); // توقف
+bridge.flush(); // ارسال فوری یک snapshot (مثلاً بعد از یک action)
 ```
 
 ---

@@ -1,0 +1,66 @@
+{
+  "name": "vue-sentinel-x",
+  "version": "0.1.0",
+  "description": "Performance and health monitoring for Vue 3 apps — one install for static analysis, runtime tracking, and intelligence reports",
+  "keywords": ["vue", "vue3", "vite", "devtools", "performance", "monitoring", "memory-leak"],
+  "license": "MIT",
+  "author": "Amir Maghami",
+  "homepage": "https://github.com/amirrr1987/vue-sentinel-x#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amirrr1987/vue-sentinel-x.git",
+    "directory": "packages/vue-sentinel-x"
+  },
+  "bugs": {
+    "url": "https://github.com/amirrr1987/vue-sentinel-x/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js"
+    },
+    "./runtime": {
+      "types": "./dist/runtime.d.ts",
+      "import": "./dist/runtime.js"
+    },
+    "./core": {
+      "types": "./dist/core.d.ts",
+      "import": "./dist/core.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@amirrr1987/vue-sentinel-x-core": "^0.1.0",
+    "@amirrr1987/vue-sentinel-x-runtime": "^0.1.0",
+    "@amirrr1987/vue-sentinel-x-vite-plugin": "^0.1.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0",
+    "vite": "^5.4.0 || ^6.0.0 || ^7.0.0"
+  },
+  "peerDependenciesMeta": {
+    "vite": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

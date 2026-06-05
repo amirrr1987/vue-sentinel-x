@@ -1,4 +1,4 @@
-# @amirrr1987/vue-sentinel-x-dashboard
+# vue-sentinel-x-dashboard
 
 Vue 3 dev dashboard for component graphs, memory, performance, and Intelligence Engine issues.
 

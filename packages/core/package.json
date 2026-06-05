@@ -1,8 +1,16 @@
 {
-  "name": "@amirrr1987/vue-sentinel-x-core",
+  "name": "vue-sentinel-x-core",
   "version": "0.1.0",
   "description": "Rules engine, intelligence analysis, shared config and types for Vue Sentinel X",
-  "keywords": ["vue", "vue3", "devtools", "performance", "monitoring", "analysis", "lint"],
+  "keywords": [
+    "vue",
+    "vue3",
+    "devtools",
+    "performance",
+    "monitoring",
+    "analysis",
+    "lint"
+  ],
   "license": "MIT",
   "author": "Amir Maghami",
   "homepage": "https://github.com/amirrr1987/vue-sentinel-x#readme",
@@ -26,7 +34,11 @@
       "import": "./dist/browser.js"
     }
   },
-  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
   "engines": {
     "node": ">=18.0.0"
   },

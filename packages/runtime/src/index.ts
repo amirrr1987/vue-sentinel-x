@@ -1,4 +1,4 @@
-import { resolveConfig, type SentinelConfig } from "@amirrr1987/vue-sentinel-x-core";
+import { resolveConfig, type SentinelConfig } from "vue-sentinel-x-core";
 import { createSentinelPlugin, type SentinelRuntimeOptions } from "./plugin.js";
 import { prepareSentinelRuntime } from "./memory/prepare.js";
 import { sentinelMemory } from "./memory/memory-tracker.js";

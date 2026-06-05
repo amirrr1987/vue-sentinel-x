@@ -1,4 +1,4 @@
-export type { SentinelConfig as VueSentinelXPluginOptions } from "@amirrr1987/vue-sentinel-x-core";
+export type { SentinelConfig as VueSentinelXPluginOptions } from "vue-sentinel-x-core";
 
 export type ProcessedModule = {
   id: string;

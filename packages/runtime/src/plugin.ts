@@ -1,5 +1,5 @@
 import type { App, ComponentPublicInstance, Plugin } from "vue";
-import { resolveConfig, type SentinelConfig } from "@amirrr1987/vue-sentinel-x-core";
+import { resolveConfig, type SentinelConfig } from "vue-sentinel-x-core";
 import { resolveComponentName } from "./component-name.js";
 import { createComponentId } from "./id.js";
 import {
@@ -31,7 +31,7 @@ export function createSentinelPlugin(
   const thresholds = options.performanceThresholds;
 
   if (!config.enabled || !config.features.runtime) {
-    return { install() {} };
+    return { install() { } };
   }
 
   const lifecycleOn = config.features.lifecycle;

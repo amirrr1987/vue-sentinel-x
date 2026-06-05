@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
-import type { ComponentGraphInput } from "@amirrr1987/vue-sentinel-x-core/browser";
+import type { ComponentGraphInput } from "vue-sentinel-x-core/browser";
 import {
   graphRendererPlaceholder,
   shortPath,

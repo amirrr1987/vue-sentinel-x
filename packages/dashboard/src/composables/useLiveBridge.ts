@@ -1,5 +1,5 @@
 import { ref, shallowRef, onUnmounted, type Ref } from "vue";
-import type { RuntimeReportSection } from "@amirrr1987/vue-sentinel-x-core/browser";
+import type { RuntimeReportSection } from "vue-sentinel-x-core/browser";
 
 export const BRIDGE_CHANNEL = "vue-sentinel-x:live";
 export const BRIDGE_VERSION = 1;

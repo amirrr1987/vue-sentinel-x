@@ -1,26 +1,18 @@
 {
-  "name": "vue-sentinel-x",
+  "name": "vue-sentinel-x-monorepo",
   "private": true,
-  "version": "0.1.0",
-  "description": "Performance and health monitoring for Vue 3 apps — static component graphs, runtime lifecycle/memory/performance tracking, and an Intelligence Engine",
-  "author": "Amir Maghami",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/amirrr1987/vue-sentinel-x.git"
-  },
-  "homepage": "https://github.com/amirrr1987/vue-sentinel-x",
-  "type": "module",
-  "workspaces": ["packages/*"],
+  "description": "Monorepo for Vue Sentinel X",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "build": "bun run --filter '@amirrr1987/vue-sentinel-x-core' build && bun run --filter '@amirrr1987/vue-sentinel-x-runtime' build && bun run --filter '@amirrr1987/vue-sentinel-x-vite-plugin' build",
-    "typecheck": "bun run --filter @amirrr1987/vue-sentinel-x-core build && bun run --filter @amirrr1987/vue-sentinel-x-core typecheck && bun run --filter @amirrr1987/vue-sentinel-x-runtime typecheck && bun run --filter @amirrr1987/vue-sentinel-x-vite-plugin typecheck && bun run --filter @amirrr1987/vue-sentinel-x-dashboard typecheck",
-    "dashboard:dev": "bun run --filter @amirrr1987/vue-sentinel-x-dashboard dev",
-    "release": "bun run build && bun run publish:packages",
-    "publish:packages": "bun run --filter '@amirrr1987/vue-sentinel-x-core' publish && bun run --filter '@amirrr1987/vue-sentinel-x-runtime' publish && bun run --filter '@amirrr1987/vue-sentinel-x-vite-plugin' publish",
-    "version:patch": "bun run scripts/bump-version.ts patch",
-    "version:minor": "bun run scripts/bump-version.ts minor",
-    "version:major": "bun run scripts/bump-version.ts major"
+    "build": "npm run build -w vue-sentinel-x-core && npm run build -w vue-sentinel-x-runtime && npm run build -w vue-sentinel-x-vite-plugin && npm run build -w vue-sentinel-x",
+    "typecheck": "npm run build -w vue-sentinel-x-core && npm run typecheck -w vue-sentinel-x-core && npm run typecheck -w vue-sentinel-x-runtime && npm run typecheck -w vue-sentinel-x-vite-plugin && npm run typecheck -w vue-sentinel-x && npm run typecheck -w vue-sentinel-x-dashboard",
+    "dashboard:dev": "npm run dev -w vue-sentinel-x-dashboard",
+    "publish:all": "npm publish -w vue-sentinel-x-core --access public && npm publish -w vue-sentinel-x-runtime --access public && npm publish -w vue-sentinel-x-vite-plugin --access public && npm publish -w vue-sentinel-x --access public",
+    "version:patch": "node --experimental-strip-types scripts/bump-version.ts patch",
+    "version:minor": "node --experimental-strip-types scripts/bump-version.ts minor",
+    "version:major": "node --experimental-strip-types scripts/bump-version.ts major"
   },
   "devDependencies": {
     "typescript": "^5.8.3"

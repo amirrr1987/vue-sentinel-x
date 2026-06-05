@@ -1,4 +1,4 @@
-import type { ComponentGraphInput } from "@amirrr1987/vue-sentinel-x-core/browser";
+import type { ComponentGraphInput } from "vue-sentinel-x-core/browser";
 
 /** Shape expected by vis-network (prepared for future integration). */
 export type VisNetworkNode = {

@@ -3,7 +3,7 @@ import type {
   IntelligenceReport,
   MemoryWarningInput,
   PerformanceRecordInput,
-} from "@amirrr1987/vue-sentinel-x-core/browser";
+} from "vue-sentinel-x-core/browser";
 
 /** Unified snapshot consumed by the dashboard UI. */
 export type SentinelSnapshot = {

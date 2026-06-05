@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
-import type { PerformanceRecordInput } from "@amirrr1987/vue-sentinel-x-core/browser";
+import type { PerformanceRecordInput } from "vue-sentinel-x-core/browser";
 import {
   chartRendererPlaceholder,
   mountDurationSeries,

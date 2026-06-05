@@ -16,7 +16,8 @@ const labels: Record<BridgeStatus, string> = {
 
 const hints: Record<BridgeStatus, string> = {
   disconnected: "Call createLiveBridge() in your app's main.ts",
-  waiting: "Make sure your app has @amirrr1987/vue-sentinel-x-runtime installed with createLiveBridge()",
+  waiting:
+    "Make sure your app has vue-sentinel-x-runtime installed with createLiveBridge()",
   connected: "Receiving live data from your app",
   stopped: "The app tab was closed or bridge was stopped",
 };
@@ -26,7 +27,10 @@ const hints: Record<BridgeStatus, string> = {
   <div class="bridge-indicator" :data-status="status" :title="hints[status]">
     <span class="bridge-indicator__dot" />
     <span class="bridge-indicator__label">{{ labels[status] }}</span>
-    <span v-if="status === 'connected' && snapshotCount > 0" class="bridge-indicator__count">
+    <span
+      v-if="status === 'connected' && snapshotCount > 0"
+      class="bridge-indicator__count"
+    >
       {{ snapshotCount }} updates
     </span>
   </div>
@@ -60,8 +64,8 @@ const hints: Record<BridgeStatus, string> = {
 
 /* disconnected */
 .bridge-indicator[data-status="disconnected"] {
-  background: rgba(255,255,255,0.05);
-  border-color: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
   color: var(--muted, #888);
 }
 .bridge-indicator[data-status="disconnected"] .bridge-indicator__dot {
@@ -101,7 +105,14 @@ const hints: Record<BridgeStatus, string> = {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.85); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
 }
 </style>

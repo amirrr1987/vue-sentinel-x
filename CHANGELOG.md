@@ -9,14 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-#### `@amirrr1987/vue-sentinel-x-runtime`
+#### `vue-sentinel-x-runtime`
 
 - **Live Bridge** (`createLiveBridge`) — broadcasts runtime snapshots to the dashboard via `BroadcastChannel` (no WebSocket or extra server needed)
 - `LiveBridge` class with `start()`, `stop()`, `flush()` methods and configurable `intervalMs`
 - Responds to `ping` messages from the dashboard for immediate snapshot delivery on connect
 - Exported from package index: `LiveBridge`, `createLiveBridge`, `getLiveBridge`, `BRIDGE_CHANNEL`, `BRIDGE_VERSION`
 
-#### `@amirrr1987/vue-sentinel-x-dashboard`
+#### `vue-sentinel-x-dashboard`
 
 - **`useLiveBridge` composable** — connects to the runtime bridge; tracks `status` (`connected` / `waiting` / `stopped` / `disconnected`), `lastSnapshot`, `snapshotCount`
 - **`LiveBridgeIndicator` component** — animated status pill in the header (green pulsing dot when live, yellow when waiting)
@@ -36,7 +36,7 @@ Initial release of the Vue Sentinel X monorepo — static analysis, runtime inst
 
 ### Added
 
-#### `@amirrr1987/vue-sentinel-x-vite-plugin`
+#### `vue-sentinel-x-vite-plugin`
 
 - Vite plugin (`vueSentinelX`) with `enforce: "pre"` transform hook for `.vue` files
 - SFC parsing via `@vue/compiler-sfc` and script analysis via TypeScript Compiler API
@@ -48,7 +48,7 @@ Initial release of the Vue Sentinel X monorepo — static analysis, runtime inst
 - Writes `analysis/component-graph.json` (configurable path)
 - Debounced graph writes in dev (`graphDebounceMs`)
 
-#### `@amirrr1987/vue-sentinel-x-runtime`
+#### `vue-sentinel-x-runtime`
 
 - Vue 3 plugin via `createRuntime()` / `createSentinelPlugin()`
 - Lifecycle tracking with unique component IDs (`mountedAt`, `unmountedAt`)
@@ -59,17 +59,17 @@ Initial release of the Vue Sentinel X monorepo — static analysis, runtime inst
 - Browser bridge: `window.__VUE_SENTINEL_X__.captureSnapshot()`
 - `prepareSentinelRuntime()` for early global patching
 
-#### `@amirrr1987/vue-sentinel-x-core`
+#### `vue-sentinel-x-core`
 
 - **Intelligence Engine** with pluggable rules and beginner-friendly output (`problem`, `suggestion`, `explanation`)
 - Rule categories: memory leaks, bad watchers, unnecessary reactivity, large components
 - **Learning Mode** with per-rule lessons, bad/good code examples (`learningEngine`, `learningMode` option)
 - Unified **`SentinelConfig`** with `resolveConfig()` and per-feature toggles
 - Report builder: `buildSentinelReport()`, `writeReports()` (JSON + optional HTML)
-- Browser-safe entry: `@amirrr1987/vue-sentinel-x-core/browser` (no Node.js `fs` dependencies)
+- Browser-safe entry: `vue-sentinel-x-core/browser` (no Node.js `fs` dependencies)
 - `buildIntelligenceContext()` to merge graph, memory, and performance inputs
 
-#### `@amirrr1987/vue-sentinel-x-dashboard`
+#### `vue-sentinel-x-dashboard`
 
 - Vue 3 + Vite dashboard (port 5174)
 - Panels: component graph, memory usage, performance metrics, issues list

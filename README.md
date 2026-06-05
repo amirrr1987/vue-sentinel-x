@@ -4,22 +4,20 @@ Performance and health monitoring for Vue 3 apps — static component graphs, ru
 
 ## Packages
 
-| Package | Purpose |
-|---------|---------|
-| `@amirrr1987/vue-sentinel-x-vite-plugin` | Analyze `.vue` files at build/dev, write graph + reports |
-| `@amirrr1987/vue-sentinel-x-runtime` | Browser plugin: lifecycle, memory leaks, performance |
-| `@amirrr1987/vue-sentinel-x-core` | Rules, reports, shared config |
-| `@amirrr1987/vue-sentinel-x-dashboard` | Local UI to explore results |
+| Package                      | Purpose                                                   |
+| ---------------------------- | --------------------------------------------------------- |
+| **`vue-sentinel-x`**         | **Install this one** — re-exports vite, runtime, and core |
+| `vue-sentinel-x-vite-plugin` | Internal — static analysis (installed automatically)      |
+| `vue-sentinel-x-runtime`     | Internal — browser plugin (installed automatically)       |
+| `vue-sentinel-x-core`        | Internal — rules engine (installed automatically)         |
+| `vue-sentinel-x-dashboard`   | Local UI (monorepo only, not on npm)                      |
 
 ## Quick start (real Vue + Vite project)
 
 ### 1. Install
 
-From your app directory (monorepo: link workspace packages, or publish to npm when ready):
-
 ```bash
-bun add -D @amirrr1987/vue-sentinel-x-vite-plugin
-bun add @amirrr1987/vue-sentinel-x-runtime
+npm install -D vue-sentinel-x
 ```
 
 ### 2. Vite config
@@ -28,7 +26,7 @@ bun add @amirrr1987/vue-sentinel-x-runtime
 // vite.config.ts
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import { vueSentinelX } from "@amirrr1987/vue-sentinel-x-vite-plugin";
+import { vueSentinelX } from "vue-sentinel-x/vite";
 
 export default defineConfig({
   plugins: [
@@ -58,9 +56,9 @@ export default defineConfig({
 
 After `vite build` or dev, check:
 
-- `analysis/component-graph.json` — component dependency graph  
-- `analysis/sentinel-report.json` — full report (graph + issues)  
-- `analysis/sentinel-report.html` — optional human-readable report  
+- `analysis/component-graph.json` — component dependency graph
+- `analysis/sentinel-report.json` — full report (graph + issues)
+- `analysis/sentinel-report.html` — optional human-readable report
 
 Add `analysis/` to `.gitignore` unless you want reports in CI artifacts.
 
@@ -70,7 +68,7 @@ Add `analysis/` to `.gitignore` unless you want reports in CI artifacts.
 // main.ts
 import { createApp } from "vue";
 import App from "./App.vue";
-import { createRuntime } from "@amirrr1987/vue-sentinel-x-runtime";
+import { createRuntime } from "vue-sentinel-x/runtime";
 
 const { plugin } = createRuntime({
   enabled: true,
@@ -111,7 +109,7 @@ import {
   buildIntelligenceContext,
   intelligenceEngine,
   learningEngine,
-} from "@amirrr1987/vue-sentinel-x-core";
+} from "vue-sentinel-x/core";
 
 const context = buildIntelligenceContext({
   projectRoot: "/your-app",
@@ -127,22 +125,22 @@ learningEngine.log(context);
 
 ## Configuration reference
 
-All packages accept a partial **`SentinelConfig`** (see `@amirrr1987/vue-sentinel-x-core`).
+All packages accept a partial **`SentinelConfig`** (see `vue-sentinel-x/core`).
 
-| Flag | Default | Description |
-|------|---------|-------------|
-| `enabled` | `true` | Master switch |
-| `features.graph` | `true` | Vite component graph |
-| `features.runtime` | `true` | Browser instrumentation |
-| `features.memory` | `true` | Leak detection |
-| `features.performance` | `true` | Mount/update/long tasks |
-| `features.intelligence` | `true` | Issue rules |
-| `features.learningMode` | `false` | Educational output |
-| `features.reports` | `true` | JSON/HTML files |
-| `reports.json` | `true` | Write `sentinel-report.json` |
-| `reports.html` | `false` | Write `sentinel-report.html` |
-| `performance.quiet` | `true` | Less console noise |
-| `performance.graphDebounceMs` | `250` | Batch graph writes in dev |
+| Flag                          | Default | Description                  |
+| ----------------------------- | ------- | ---------------------------- |
+| `enabled`                     | `true`  | Master switch                |
+| `features.graph`              | `true`  | Vite component graph         |
+| `features.runtime`            | `true`  | Browser instrumentation      |
+| `features.memory`             | `true`  | Leak detection               |
+| `features.performance`        | `true`  | Mount/update/long tasks      |
+| `features.intelligence`       | `true`  | Issue rules                  |
+| `features.learningMode`       | `false` | Educational output           |
+| `features.reports`            | `true`  | JSON/HTML files              |
+| `reports.json`                | `true`  | Write `sentinel-report.json` |
+| `reports.html`                | `false` | Write `sentinel-report.html` |
+| `performance.quiet`           | `true`  | Less console noise           |
+| `performance.graphDebounceMs` | `250`   | Batch graph writes in dev    |
 
 Disable everything quickly:
 
@@ -172,25 +170,25 @@ createRuntime({ enabled: false });
               └──────────────────┘
 ```
 
-1. **Plugin** parses `.vue` files, caches by content hash, writes the graph and build-time report.  
-2. **Runtime** tracks mounts, memory, and performance; exposes `__VUE_SENTINEL_X__` for live snapshots.  
-3. **Core** merges inputs and runs rules → `problem`, `suggestion`, `explanation`.  
+1. **Plugin** parses `.vue` files, caches by content hash, writes the graph and build-time report.
+2. **Runtime** tracks mounts, memory, and performance; exposes `__VUE_SENTINEL_X__` for live snapshots.
+3. **Core** merges inputs and runs rules → `problem`, `suggestion`, `explanation`.
 4. **Dashboard** visualizes the same snapshot (mock or fetched JSON).
 
 ## Monorepo scripts
 
 ```bash
-bun install
-bun run build          # build all packages
-bun run typecheck
-bun run dashboard:dev  # dashboard UI
+npm install
+npm run build          # build all packages
+npm run typecheck
+npm run dashboard:dev  # dashboard UI
 ```
 
 ## Performance notes
 
-- Graph analysis is **incremental** (content hash cache; only changed files re-parse).  
-- Graph writes are **debounced** in dev (`graphDebounceMs`).  
-- Runtime patches install only when `features.memory` / `performance` are on.  
+- Graph analysis is **incremental** (content hash cache; only changed files re-parse).
+- Graph writes are **debounced** in dev (`graphDebounceMs`).
+- Runtime patches install only when `features.memory` / `performance` are on.
 - Use `performance.quiet: true` and `logFiles: false` in everyday dev.
 
 ## License
