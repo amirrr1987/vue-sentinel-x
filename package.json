@@ -14,7 +14,7 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "build": "bun run --filter '@vue-sentinel-x/core' build && bun run --filter '@vue-sentinel-x/runtime' build && bun run --filter '@vue-sentinel-x/vite-plugin' build",
-    "typecheck": "bun run --filter '@vue-sentinel-x/*' typecheck",
+    "typecheck": "bun run --filter @vue-sentinel-x/core build && bun run --filter @vue-sentinel-x/core typecheck && bun run --filter @vue-sentinel-x/runtime typecheck && bun run --filter @vue-sentinel-x/vite-plugin typecheck && bun run --filter @vue-sentinel-x/dashboard typecheck",
     "dashboard:dev": "bun run --filter @vue-sentinel-x/dashboard dev",
     "release": "bun run build && bun run publish:packages",
     "publish:packages": "bun run --filter '@vue-sentinel-x/core' publish && bun run --filter '@vue-sentinel-x/runtime' publish && bun run --filter '@vue-sentinel-x/vite-plugin' publish",

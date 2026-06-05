@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { BridgeStatus } from "../composables/useLiveBridge.js";
 
-const props = defineProps<{
+defineProps<{
   status: BridgeStatus;
   snapshotCount: number;
   lastUpdated: number | null;

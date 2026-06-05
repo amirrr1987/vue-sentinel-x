@@ -10,14 +10,14 @@
     },
     "packages/core": {
       "name": "@vue-sentinel-x/core",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "devDependencies": {
         "@types/node": "^22.15.21",
       },
     },
     "packages/dashboard": {
       "name": "@vue-sentinel-x/dashboard",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "dependencies": {
         "@vue-sentinel-x/core": "workspace:*",
         "vue": "^3.5.16",
@@ -31,11 +31,12 @@
     },
     "packages/runtime": {
       "name": "@vue-sentinel-x/runtime",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "dependencies": {
-        "@vue-sentinel-x/core": "workspace:*",
+        "@vue-sentinel-x/core": "^0.1.0",
       },
       "devDependencies": {
+        "@vue-sentinel-x/core": "workspace:*",
         "vue": "^3.5.16",
       },
       "peerDependencies": {
@@ -44,14 +45,15 @@
     },
     "packages/vite-plugin": {
       "name": "@vue-sentinel-x/vite-plugin",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "dependencies": {
-        "@vue-sentinel-x/core": "workspace:*",
+        "@vue-sentinel-x/core": "^0.1.0",
         "@vue/compiler-sfc": "^3.5.16",
         "typescript": "^5.8.3",
       },
       "devDependencies": {
         "@types/node": "^22.15.21",
+        "@vue-sentinel-x/core": "workspace:*",
         "vite": "^6.3.5",
       },
       "peerDependencies": {

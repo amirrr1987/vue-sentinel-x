@@ -37,6 +37,7 @@
     "vue": "^3.4.0"
   },
   "devDependencies": {
+    "@vue-sentinel-x/core": "workspace:*",
     "vue": "^3.5.16"
   },
   "publishConfig": {
