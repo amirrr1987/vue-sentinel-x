@@ -3,14 +3,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "composite": true,
-    "lib": ["ES2022", "DOM"],
-    "baseUrl": ".",
-    "paths": {
-      "@vue-sentinel-x/core": ["../core/src/index.ts"],
-      "@vue-sentinel-x/core/browser": ["../core/src/browser.ts"]
-    }
+    "lib": ["ES2022", "DOM"]
   },
-  "include": ["src"],
-  "references": [{ "path": "../core" }]
+  "include": ["src"]
 }

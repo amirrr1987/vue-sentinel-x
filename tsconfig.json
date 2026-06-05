@@ -1,9 +1,3 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./packages/core" },
-    { "path": "./packages/vite-plugin" },
-    { "path": "./packages/runtime" },
-    { "path": "./packages/dashboard" }
-  ]
+  "files": []
 }
