@@ -7,14 +7,16 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/amirrr1987/vue-sentinel-x.git"
+    "url": "git+https://github.com/amirrr1987/vue-sentinel-x.git"
   },
   "homepage": "https://github.com/amirrr1987/vue-sentinel-x",
   "type": "module",
   "workspaces": ["packages/*"],
   "scripts": {
-    "build": "bun run --filter '@vue-sentinel-x/*' build",
+    "build": "bun run --filter @vue-sentinel-x/core build && bun run --filter '@vue-sentinel-x/{runtime,vite-plugin}' build && bun run --filter @vue-sentinel-x/dashboard build",
+    "clean": "bun run --filter '@vue-sentinel-x/*' clean",
     "typecheck": "bun run --filter @vue-sentinel-x/core build && bun run --filter @vue-sentinel-x/core typecheck && bun run --filter @vue-sentinel-x/runtime typecheck && bun run --filter @vue-sentinel-x/vite-plugin typecheck && bun run --filter @vue-sentinel-x/dashboard typecheck",
+    "test": "bun run --filter @vue-sentinel-x/core test && bun run --filter @vue-sentinel-x/vite-plugin test",
     "dashboard:dev": "bun run --filter @vue-sentinel-x/dashboard dev",
     "prepublish:check": "bun run build && node scripts/prepare-publish.mjs"
   },

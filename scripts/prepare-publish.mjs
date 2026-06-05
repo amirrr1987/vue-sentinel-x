@@ -40,6 +40,14 @@ for (const pkgDir of packages) {
   }
 }
 
+const coreBrowser = join(root, "packages/core", "dist", "browser.js");
+if (!existsSync(coreBrowser)) {
+  console.error(
+    "✖  @vue-sentinel-x/core: missing dist/browser.js — run: bun run build",
+  );
+  failed = true;
+}
+
 if (failed) {
   process.exit(1);
 }
