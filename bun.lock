@@ -18,7 +18,7 @@
     },
     "packages/dashboard": {
       "name": "@vue-sentinel-x/dashboard",
-      "version": "0.0.0",
+      "version": "0.0.1",
       "dependencies": {
         "@vue-sentinel-x/core": "workspace:*",
         "vue": "^3.5.16",

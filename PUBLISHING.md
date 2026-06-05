@@ -21,6 +21,33 @@ npm login
 npm whoami
 ```
 
+### 2b. Two-factor authentication (required for publish)
+
+npm often returns **403** with:
+
+> Two-factor authentication or granular access token with bypass 2fa enabled is required to publish packages.
+
+**Fix (choose one):**
+
+1. **Enable 2FA on npm**  
+   [npmjs.com](https://www.npmjs.com) → Account → **Enable 2FA** → choose **Authorization and publishing** (or both).
+
+2. **Publish with a one-time password** (after 2FA is on):
+
+   ```bash
+   npm publish -w @vue-sentinel-x/core --access public --otp=123456
+   ```
+
+   Replace `123456` with the current code from your authenticator app.
+
+3. **Or use a Granular Access Token** (for CI / automation):  
+   Account → Access Tokens → Generate New Token → **Granular Access Token**  
+   - Permissions: Read and write packages  
+   - Enable **bypass 2FA for publish** (if shown)  
+   - Publish with: `npm config set //registry.npmjs.org/:_authToken=YOUR_TOKEN`
+
+   Do not commit tokens to git.
+
 ### 3. Build
 
 ```bash
@@ -76,11 +103,29 @@ Consider [Changesets](https://github.com/changesets/changesets) later for automa
 
 ---
 
-## CI publish (optional)
+## CI publish (GitHub Actions)
 
-1. Create an npm **Automation** or **Publish** token.
-2. Add `NPM_TOKEN` to GitHub Actions secrets.
-3. On release, run build + publish with `NODE_AUTH_TOKEN`.
+Workflow: [`.github/workflows/publish.yml`](./.github/workflows/publish.yml)
+
+- Runs on **git tags** `v*` (e.g. `v0.0.1`) or **workflow_dispatch** (manual).
+- Does **not** publish on every push to `main`.
+
+### Setup
+
+1. Create an npm **Granular Access Token** with **Read and write** on packages.
+2. Enable **Bypass 2FA for automation** (required if your account has 2FA).
+3. In GitHub repo → **Settings → Secrets and variables → Actions** → New secret:
+   - Name: `NPM_TOKEN`
+   - Value: your token (`npm_...`)
+
+### Release via tag
+
+```bash
+git tag v0.0.1
+git push origin v0.0.1
+```
+
+The workflow builds with Bun, then publishes `core` → `runtime` → `vite-plugin` to npm.
 
 ---
 
