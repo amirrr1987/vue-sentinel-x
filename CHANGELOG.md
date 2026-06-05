@@ -5,6 +5,31 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0] - 2026-06-05
+
+### Added
+
+#### `@vue-sentinel-x/runtime`
+
+- **Live Bridge** (`createLiveBridge`) — broadcasts runtime snapshots to the dashboard via `BroadcastChannel` (no WebSocket or extra server needed)
+- `LiveBridge` class with `start()`, `stop()`, `flush()` methods and configurable `intervalMs`
+- Responds to `ping` messages from the dashboard for immediate snapshot delivery on connect
+- Exported from package index: `LiveBridge`, `createLiveBridge`, `getLiveBridge`, `BRIDGE_CHANNEL`, `BRIDGE_VERSION`
+
+#### `@vue-sentinel-x/dashboard`
+
+- **`useLiveBridge` composable** — connects to the runtime bridge; tracks `status` (`connected` / `waiting` / `stopped` / `disconnected`), `lastSnapshot`, `snapshotCount`
+- **`LiveBridgeIndicator` component** — animated status pill in the header (green pulsing dot when live, yellow when waiting)
+- **`useSentinelData`** updated with `liveBridge: true` option — merges incoming runtime snapshots reactively, appends memory history points for the chart
+
+#### Monorepo / publishing
+
+- All publishable packages bumped to `0.1.0` with `description`, `keywords`, `license`, `author`, `repository`, `bugs`, `engines`, `sideEffects`, `publishConfig`
+- `scripts/bump-version.ts` — unified version bump across all packages
+- `LICENSE` (MIT)
+- `.npmignore` per package (excludes `src/`, `tsconfig.json`, `*.tsbuildinfo`)
+- GitHub Actions: `ci.yml` (typecheck + build on push/PR), `publish.yml` (publish to npm on `v*` tags with provenance)
+
 ## [0.0.1] - 2026-06-05
 
 Initial release of the Vue Sentinel X monorepo — static analysis, runtime instrumentation, intelligence rules, reports, and a dev dashboard.

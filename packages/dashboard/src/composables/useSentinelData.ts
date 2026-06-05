@@ -1,7 +1,8 @@
-import { ref, shallowRef, type Ref } from "vue";
-import type { SentinelReportFile } from "@vue-sentinel-x/core/browser";
+import { ref, shallowRef, watch, type Ref } from "vue";
+import type { SentinelReportFile, RuntimeReportSection } from "@vue-sentinel-x/core/browser";
 import { createMockSnapshot } from "../data/mock-snapshot.js";
 import type { SentinelSnapshot } from "../types.js";
+import { useLiveBridge, type BridgeStatus } from "./useLiveBridge.js";
 
 function reportToSnapshot(report: SentinelReportFile): SentinelSnapshot {
   return {
@@ -36,23 +37,84 @@ function reportToSnapshot(report: SentinelReportFile): SentinelSnapshot {
   };
 }
 
+/** Merge a live RuntimeReportSection into an existing snapshot */
+function mergeRuntimeIntoSnapshot(
+  base: SentinelSnapshot,
+  runtime: RuntimeReportSection,
+  timestamp: number,
+): SentinelSnapshot {
+  const heap = runtime.memory?.heap;
+  const usedMB = heap ? heap.usedJSHeapSize / 1024 / 1024 : base.memory.usedMB;
+  const totalMB = heap ? heap.totalJSHeapSize / 1024 / 1024 : base.memory.totalMB;
+  const limitMB = heap ? heap.jsHeapSizeLimit / 1024 / 1024 : base.memory.limitMB;
+
+  // Append a history point (keep last 20)
+  const label = new Date(timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  const history = [
+    ...base.memory.history.slice(-19),
+    { label, usedMB },
+  ];
+
+  const perfRecords = (runtime.performance?.records ?? []).map((r) => ({
+    componentId: r.name,
+    name: r.name,
+    mountDurationMs: r.mountDurationMs,
+    updates: {
+      count: r.updateCount,
+      avgMs: r.avgUpdateMs,
+      maxMs: r.avgUpdateMs,
+    },
+  }));
+
+  return {
+    ...base,
+    source: "live",
+    generatedAt: new Date(timestamp).toISOString(),
+    memory: {
+      usedMB,
+      totalMB,
+      limitMB,
+      history,
+      warnings: runtime.memory?.warnings ?? base.memory.warnings,
+    },
+    performance: {
+      records: perfRecords.length > 0 ? perfRecords : base.performance.records,
+      longTaskCount: runtime.performance?.longTaskCount ?? base.performance.longTaskCount,
+      slowComponentCount: runtime.performance?.slowComponentCount ?? base.performance.slowComponentCount,
+    },
+  };
+}
+
 const GRAPH_URL = "/analysis/component-graph.json";
 const REPORT_URL = "/analysis/sentinel-report.json";
 
 export type UseSentinelDataOptions = {
   /** Try to load live graph JSON from the Vite plugin output */
   fetchLiveGraph?: boolean;
+  /** Connect to the runtime LiveBridge (BroadcastChannel) for real-time data */
+  liveBridge?: boolean;
 };
 
-/**
- * Loads dashboard data.
- * Today: mock snapshot + Intelligence Engine report.
- * Later: merge live graph JSON + runtime `window.__SENTINEL__` bridge.
- */
 export function useSentinelData(options: UseSentinelDataOptions = {}) {
   const snapshot = shallowRef<SentinelSnapshot | null>(null);
   const loading = ref(false);
   const error = ref<string | null>(null);
+
+  // Live bridge
+  const bridge = options.liveBridge ? useLiveBridge() : null;
+  const bridgeStatus = bridge?.status ?? ref<BridgeStatus>("disconnected");
+
+  // When a new snapshot arrives from the bridge, merge it in
+  if (bridge) {
+    watch(bridge.lastSnapshot, (runtime) => {
+      if (!runtime || !snapshot.value) return;
+      snapshot.value = mergeRuntimeIntoSnapshot(
+        snapshot.value,
+        runtime,
+        bridge.lastUpdated.value ?? Date.now(),
+      );
+    });
+  }
 
   async function load(): Promise<void> {
     loading.value = true;
@@ -82,6 +144,11 @@ export function useSentinelData(options: UseSentinelDataOptions = {}) {
       }
 
       snapshot.value = data;
+
+      // Start live bridge after base data is loaded
+      if (bridge) {
+        bridge.connect();
+      }
     } catch (e) {
       error.value = e instanceof Error ? e.message : String(e);
     } finally {
@@ -89,21 +156,26 @@ export function useSentinelData(options: UseSentinelDataOptions = {}) {
     }
   }
 
+  function disconnect() {
+    bridge?.disconnect();
+  }
+
   return {
     snapshot: snapshot as Ref<SentinelSnapshot | null>,
     loading,
     error,
+    bridgeStatus,
+    snapshotCount: bridge?.snapshotCount ?? ref(0),
     load,
     refresh: load,
+    disconnect,
   };
 }
 
 async function tryFetchReport(): Promise<SentinelReportFile | null> {
   try {
     const res = await fetch(REPORT_URL);
-    if (!res.ok) {
-      return null;
-    }
+    if (!res.ok) return null;
     return (await res.json()) as SentinelReportFile;
   } catch {
     return null;
@@ -117,9 +189,7 @@ async function tryFetchGraph(): Promise<{
 } | null> {
   try {
     const res = await fetch(GRAPH_URL);
-    if (!res.ok) {
-      return null;
-    }
+    if (!res.ok) return null;
     return (await res.json()) as {
       components: SentinelSnapshot["componentGraph"]["components"];
       sharedComponents?: SentinelSnapshot["componentGraph"]["sharedComponents"];

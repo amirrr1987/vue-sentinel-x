@@ -1,21 +1,26 @@
 {
   "name": "vue-sentinel-x",
   "private": true,
-  "version": "0.0.1",
-  "description": "A Vue.js performance monitoring tool",
+  "version": "0.1.0",
+  "description": "Performance and health monitoring for Vue 3 apps — static component graphs, runtime lifecycle/memory/performance tracking, and an Intelligence Engine",
   "author": "Amir Maghami",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/amirrr1987/vue-sentinel-x.git"
+    "url": "git+https://github.com/amirrr1987/vue-sentinel-x.git"
   },
   "homepage": "https://github.com/amirrr1987/vue-sentinel-x",
   "type": "module",
   "workspaces": ["packages/*"],
   "scripts": {
-    "build": "bun run --filter '@vue-sentinel-x/*' build",
+    "build": "bun run --filter '@vue-sentinel-x/core' build && bun run --filter '@vue-sentinel-x/runtime' build && bun run --filter '@vue-sentinel-x/vite-plugin' build",
     "typecheck": "bun run --filter '@vue-sentinel-x/*' typecheck",
-    "dashboard:dev": "bun run --filter @vue-sentinel-x/dashboard dev"
+    "dashboard:dev": "bun run --filter @vue-sentinel-x/dashboard dev",
+    "release": "bun run build && bun run publish:packages",
+    "publish:packages": "bun run --filter '@vue-sentinel-x/core' publish && bun run --filter '@vue-sentinel-x/runtime' publish && bun run --filter '@vue-sentinel-x/vite-plugin' publish",
+    "version:patch": "bun run scripts/bump-version.ts patch",
+    "version:minor": "bun run scripts/bump-version.ts minor",
+    "version:major": "bun run scripts/bump-version.ts major"
   },
   "devDependencies": {
     "typescript": "^5.8.3"

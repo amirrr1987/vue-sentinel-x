@@ -7,8 +7,9 @@ import MemoryPanel from "./components/MemoryPanel.vue";
 import PerformancePanel from "./components/PerformancePanel.vue";
 import { useSentinelData } from "./composables/useSentinelData.js";
 
-const { snapshot, loading, error, load } = useSentinelData({
+const { snapshot, loading, error, bridgeStatus, snapshotCount, load } = useSentinelData({
   fetchLiveGraph: false,
+  liveBridge: true,   // ← live bridge فعال
 });
 
 onMounted(() => {
@@ -32,6 +33,9 @@ onMounted(() => {
         :source="snapshot.source"
         :generated-at="snapshot.generatedAt"
         :issue-count="snapshot.report.findings.length"
+        :bridge-status="bridgeStatus"
+        :snapshot-count="snapshotCount"
+        :last-updated="null"
       />
 
       <main class="grid">

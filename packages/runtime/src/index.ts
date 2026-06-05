@@ -87,3 +87,12 @@ export function createRuntime(
 }
 
 export type { SentinelConfig };
+
+export {
+  LiveBridge,
+  createLiveBridge,
+  getLiveBridge,
+  BRIDGE_CHANNEL,
+  BRIDGE_VERSION,
+} from "./live-bridge.js";
+export type { LiveBridgeOptions, BridgeMessage, BridgeMessageType } from "./live-bridge.js";

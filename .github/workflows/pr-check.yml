@@ -1,0 +1,65 @@
+name: PR Check
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Validate PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0    # needed for changelog diff check
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Build
+        run: bun run build
+
+      - name: Check packages have same version
+        run: |
+          CORE=$(jq -r '.version' packages/core/package.json)
+          RT=$(jq -r '.version' packages/runtime/package.json)
+          VP=$(jq -r '.version' packages/vite-plugin/package.json)
+          echo "core=$CORE  runtime=$RT  vite-plugin=$VP"
+          if [ "$CORE" != "$RT" ] || [ "$CORE" != "$VP" ]; then
+            echo "::error::Package versions are out of sync! Run: bun run version:patch (or minor/major)"
+            exit 1
+          fi
+          echo "✓ All packages at v$CORE"
+
+      - name: Check bun.lock is up to date
+        run: |
+          bun install --frozen-lockfile 2>&1
+          if git diff --exit-code bun.lock; then
+            echo "✓ bun.lock is up to date"
+          else
+            echo "::error::bun.lock is out of date. Run: bun install"
+            exit 1
+          fi

@@ -1,25 +1,45 @@
 {
   "name": "@vue-sentinel-x/runtime",
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "Browser runtime plugin for Vue 3 — lifecycle, memory leak detection, performance tracking, and live dashboard bridge",
+  "keywords": ["vue", "vue3", "devtools", "performance", "memory-leak", "monitoring", "runtime", "plugin"],
+  "license": "MIT",
+  "author": "Amir Maghami",
+  "homepage": "https://github.com/amirrr1987/vue-sentinel-x#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amirrr1987/vue-sentinel-x.git",
+    "directory": "packages/runtime"
+  },
+  "bugs": {
+    "url": "https://github.com/amirrr1987/vue-sentinel-x/issues"
+  },
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": ["dist", "README.md", "LIVE_BRIDGE.md"],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@vue-sentinel-x/core": "workspace:*"
+    "@vue-sentinel-x/core": "^0.1.0"
   },
   "peerDependencies": {
     "vue": "^3.4.0"
   },
   "devDependencies": {
     "vue": "^3.5.16"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

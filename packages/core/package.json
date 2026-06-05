@@ -1,7 +1,21 @@
 {
   "name": "@vue-sentinel-x/core",
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "Rules engine, intelligence analysis, shared config and types for Vue Sentinel X",
+  "keywords": ["vue", "vue3", "devtools", "performance", "monitoring", "analysis", "lint"],
+  "license": "MIT",
+  "author": "Amir Maghami",
+  "homepage": "https://github.com/amirrr1987/vue-sentinel-x#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amirrr1987/vue-sentinel-x.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/amirrr1987/vue-sentinel-x/issues"
+  },
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -12,12 +26,18 @@
       "import": "./dist/browser.js"
     }
   },
-  "files": ["dist"],
+  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
     "@types/node": "^22.15.21"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
