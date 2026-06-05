@@ -8,7 +8,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@vue-sentinel-x/core/browser": ["../core/src/browser.ts"]
+      "@amirrr1987/vue-sentinel-x-core/browser": ["../core/src/browser.ts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.vue", "env.d.ts"]

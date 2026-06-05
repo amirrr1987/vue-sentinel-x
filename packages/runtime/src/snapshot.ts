@@ -2,7 +2,7 @@ import { captureMemorySnapshot } from "./memory/performance-memory.js";
 import { sentinelMemory } from "./memory/memory-tracker.js";
 import { sentinelPerformance } from "./performance/performance-tracker.js";
 import { sentinelTracker } from "./tracker.js";
-import type { RuntimeReportSection } from "@vue-sentinel-x/core";
+import type { RuntimeReportSection } from "@amirrr1987/vue-sentinel-x-core";
 
 /** Serializable runtime data for reports and the dashboard. */
 export function captureRuntimeSnapshot(): RuntimeReportSection {

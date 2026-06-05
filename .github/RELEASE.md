@@ -17,7 +17,7 @@ bun run version:major
 
 این اسکریپت:
 - version همه پکیج‌ها رو sync می‌کنه
-- وابستگی‌های داخلی (`@vue-sentinel-x/*`) رو آپدیت می‌کنه
+- وابستگی‌های داخلی (`@amirrr1987/vue-sentinel-x-*`) رو آپدیت می‌کنه
 
 ### 2. CHANGELOG.md رو آپدیت کن
 
@@ -71,7 +71,7 @@ git push origin main --tags
 
 | Secret | توضیح |
 |--------|-------|
-| `NPM_TOKEN` | از npmjs.com → Access Tokens → Granular (Automation type) بساز |
+| `NPM_TOKEN` | Granular token برای اکانت **@amirrr1987** — Read/Write + **Bypass 2FA for publish** (سازمان npm لازم نیست؛ scoped public رایگان است) |
 
 مسیر در GitHub: `Settings → Secrets and variables → Actions → New repository secret`
 

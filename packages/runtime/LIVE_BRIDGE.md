@@ -18,7 +18,7 @@ createLiveBridge()  ────────► useLiveBridge()
 ## ۱. نصب در اپ Vue شما
 
 ```bash
-bun add @vue-sentinel-x/runtime
+bun add @amirrr1987/vue-sentinel-x-runtime
 ```
 
 ## ۲. تنظیم `main.ts`
@@ -26,7 +26,7 @@ bun add @vue-sentinel-x/runtime
 ```ts
 import { createApp } from "vue";
 import App from "./App.vue";
-import { createRuntime, createLiveBridge } from "@vue-sentinel-x/runtime";
+import { createRuntime, createLiveBridge } from "@amirrr1987/vue-sentinel-x-runtime";
 
 // Runtime plugin (lifecycle + memory + performance tracking)
 const { plugin } = createRuntime({

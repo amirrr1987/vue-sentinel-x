@@ -13,11 +13,11 @@
   "type": "module",
   "workspaces": ["packages/*"],
   "scripts": {
-    "build": "bun run --filter '@vue-sentinel-x/core' build && bun run --filter '@vue-sentinel-x/runtime' build && bun run --filter '@vue-sentinel-x/vite-plugin' build",
-    "typecheck": "bun run --filter @vue-sentinel-x/core build && bun run --filter @vue-sentinel-x/core typecheck && bun run --filter @vue-sentinel-x/runtime typecheck && bun run --filter @vue-sentinel-x/vite-plugin typecheck && bun run --filter @vue-sentinel-x/dashboard typecheck",
-    "dashboard:dev": "bun run --filter @vue-sentinel-x/dashboard dev",
+    "build": "bun run --filter '@amirrr1987/vue-sentinel-x-core' build && bun run --filter '@amirrr1987/vue-sentinel-x-runtime' build && bun run --filter '@amirrr1987/vue-sentinel-x-vite-plugin' build",
+    "typecheck": "bun run --filter @amirrr1987/vue-sentinel-x-core build && bun run --filter @amirrr1987/vue-sentinel-x-core typecheck && bun run --filter @amirrr1987/vue-sentinel-x-runtime typecheck && bun run --filter @amirrr1987/vue-sentinel-x-vite-plugin typecheck && bun run --filter @amirrr1987/vue-sentinel-x-dashboard typecheck",
+    "dashboard:dev": "bun run --filter @amirrr1987/vue-sentinel-x-dashboard dev",
     "release": "bun run build && bun run publish:packages",
-    "publish:packages": "bun run --filter '@vue-sentinel-x/core' publish && bun run --filter '@vue-sentinel-x/runtime' publish && bun run --filter '@vue-sentinel-x/vite-plugin' publish",
+    "publish:packages": "bun run --filter '@amirrr1987/vue-sentinel-x-core' publish && bun run --filter '@amirrr1987/vue-sentinel-x-runtime' publish && bun run --filter '@amirrr1987/vue-sentinel-x-vite-plugin' publish",
     "version:patch": "bun run scripts/bump-version.ts patch",
     "version:minor": "bun run scripts/bump-version.ts minor",
     "version:major": "bun run scripts/bump-version.ts major"

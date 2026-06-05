@@ -6,10 +6,10 @@ Performance and health monitoring for Vue 3 apps — static component graphs, ru
 
 | Package | Purpose |
 |---------|---------|
-| `@vue-sentinel-x/vite-plugin` | Analyze `.vue` files at build/dev, write graph + reports |
-| `@vue-sentinel-x/runtime` | Browser plugin: lifecycle, memory leaks, performance |
-| `@vue-sentinel-x/core` | Rules, reports, shared config |
-| `@vue-sentinel-x/dashboard` | Local UI to explore results |
+| `@amirrr1987/vue-sentinel-x-vite-plugin` | Analyze `.vue` files at build/dev, write graph + reports |
+| `@amirrr1987/vue-sentinel-x-runtime` | Browser plugin: lifecycle, memory leaks, performance |
+| `@amirrr1987/vue-sentinel-x-core` | Rules, reports, shared config |
+| `@amirrr1987/vue-sentinel-x-dashboard` | Local UI to explore results |
 
 ## Quick start (real Vue + Vite project)
 
@@ -18,8 +18,8 @@ Performance and health monitoring for Vue 3 apps — static component graphs, ru
 From your app directory (monorepo: link workspace packages, or publish to npm when ready):
 
 ```bash
-bun add -D @vue-sentinel-x/vite-plugin
-bun add @vue-sentinel-x/runtime
+bun add -D @amirrr1987/vue-sentinel-x-vite-plugin
+bun add @amirrr1987/vue-sentinel-x-runtime
 ```
 
 ### 2. Vite config
@@ -28,7 +28,7 @@ bun add @vue-sentinel-x/runtime
 // vite.config.ts
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import { vueSentinelX } from "@vue-sentinel-x/vite-plugin";
+import { vueSentinelX } from "@amirrr1987/vue-sentinel-x-vite-plugin";
 
 export default defineConfig({
   plugins: [
@@ -70,7 +70,7 @@ Add `analysis/` to `.gitignore` unless you want reports in CI artifacts.
 // main.ts
 import { createApp } from "vue";
 import App from "./App.vue";
-import { createRuntime } from "@vue-sentinel-x/runtime";
+import { createRuntime } from "@amirrr1987/vue-sentinel-x-runtime";
 
 const { plugin } = createRuntime({
   enabled: true,
@@ -111,7 +111,7 @@ import {
   buildIntelligenceContext,
   intelligenceEngine,
   learningEngine,
-} from "@vue-sentinel-x/core";
+} from "@amirrr1987/vue-sentinel-x-core";
 
 const context = buildIntelligenceContext({
   projectRoot: "/your-app",
@@ -127,7 +127,7 @@ learningEngine.log(context);
 
 ## Configuration reference
 
-All packages accept a partial **`SentinelConfig`** (see `@vue-sentinel-x/core`).
+All packages accept a partial **`SentinelConfig`** (see `@amirrr1987/vue-sentinel-x-core`).
 
 | Flag | Default | Description |
 |------|---------|-------------|

@@ -5,7 +5,7 @@ import {
   resolveConfig,
   writeReports,
   type SentinelConfig,
-} from "@vue-sentinel-x/core";
+} from "@amirrr1987/vue-sentinel-x-core";
 import type { Plugin, ViteDevServer } from "vite";
 import { normalizePath } from "vite";
 import { AnalysisStore } from "./cache/analysis-store.js";
@@ -35,7 +35,7 @@ export type {
 export { analyzeVueFile } from "./analysis/analyze-vue-file.js";
 export { AnalysisStore } from "./cache/analysis-store.js";
 export { DependencyGraphBuilder } from "./graph/index.js";
-export { resolveConfig, type SentinelConfig } from "@vue-sentinel-x/core";
+export { resolveConfig, type SentinelConfig } from "@amirrr1987/vue-sentinel-x-core";
 
 export function vueSentinelX(
   options: VueSentinelXPluginOptions = {},

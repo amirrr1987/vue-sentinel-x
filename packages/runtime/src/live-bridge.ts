@@ -28,7 +28,7 @@ export type LiveBridgeOptions = {
  * via BroadcastChannel — works across tabs on the same origin.
  *
  * Usage in main.ts:
- *   import { createLiveBridge } from "@vue-sentinel-x/runtime";
+ *   import { createLiveBridge } from "@amirrr1987/vue-sentinel-x-runtime";
  *   const bridge = createLiveBridge({ intervalMs: 1500 });
  *   bridge.start();
  */

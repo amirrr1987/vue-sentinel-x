@@ -1,5 +1,5 @@
 {
-  "name": "@vue-sentinel-x/core",
+  "name": "@amirrr1987/vue-sentinel-x-core",
   "version": "0.1.0",
   "description": "Rules engine, intelligence analysis, shared config and types for Vue Sentinel X",
   "keywords": ["vue", "vue3", "devtools", "performance", "monitoring", "analysis", "lint"],

@@ -1,5 +1,5 @@
 {
-  "name": "@vue-sentinel-x/vite-plugin",
+  "name": "@amirrr1987/vue-sentinel-x-vite-plugin",
   "version": "0.1.0",
   "description": "Vite plugin for Vue Sentinel X — static component graph analysis, incremental build reports, and Intelligence Engine integration",
   "keywords": ["vue", "vue3", "vite", "vite-plugin", "component-graph", "static-analysis", "devtools"],
@@ -31,7 +31,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@vue-sentinel-x/core": "^0.1.0",
+    "@amirrr1987/vue-sentinel-x-core": "^0.1.0",
     "@vue/compiler-sfc": "^3.5.16",
     "typescript": "^5.8.3"
   },
@@ -39,7 +39,7 @@
     "vite": "^5.4.0 || ^6.0.0 || ^7.0.0"
   },
   "devDependencies": {
-    "@vue-sentinel-x/core": "workspace:*",
+    "@amirrr1987/vue-sentinel-x-core": "workspace:*",
     "@types/node": "^22.15.21",
     "vite": "^6.3.5"
   },

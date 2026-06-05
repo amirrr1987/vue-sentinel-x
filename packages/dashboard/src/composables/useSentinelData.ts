@@ -1,5 +1,5 @@
 import { ref, shallowRef, watch, type Ref } from "vue";
-import type { SentinelReportFile, RuntimeReportSection } from "@vue-sentinel-x/core/browser";
+import type { SentinelReportFile, RuntimeReportSection } from "@amirrr1987/vue-sentinel-x-core/browser";
 import { createMockSnapshot } from "../data/mock-snapshot.js";
 import type { SentinelSnapshot } from "../types.js";
 import { useLiveBridge, type BridgeStatus } from "./useLiveBridge.js";

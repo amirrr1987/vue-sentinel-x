@@ -16,7 +16,7 @@ const labels: Record<BridgeStatus, string> = {
 
 const hints: Record<BridgeStatus, string> = {
   disconnected: "Call createLiveBridge() in your app's main.ts",
-  waiting: "Make sure your app has @vue-sentinel-x/runtime installed with createLiveBridge()",
+  waiting: "Make sure your app has @amirrr1987/vue-sentinel-x-runtime installed with createLiveBridge()",
   connected: "Receiving live data from your app",
   stopped: "The app tab was closed or bridge was stopped",
 };

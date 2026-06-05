@@ -1,5 +1,5 @@
 {
-  "name": "@vue-sentinel-x/runtime",
+  "name": "@amirrr1987/vue-sentinel-x-runtime",
   "version": "0.1.0",
   "description": "Browser runtime plugin for Vue 3 — lifecycle, memory leak detection, performance tracking, and live dashboard bridge",
   "keywords": ["vue", "vue3", "devtools", "performance", "memory-leak", "monitoring", "runtime", "plugin"],
@@ -31,13 +31,13 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@vue-sentinel-x/core": "^0.1.0"
+    "@amirrr1987/vue-sentinel-x-core": "^0.1.0"
   },
   "peerDependencies": {
     "vue": "^3.4.0"
   },
   "devDependencies": {
-    "@vue-sentinel-x/core": "workspace:*",
+    "@amirrr1987/vue-sentinel-x-core": "workspace:*",
     "vue": "^3.5.16"
   },
   "publishConfig": {

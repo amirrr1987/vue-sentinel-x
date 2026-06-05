@@ -1,4 +1,4 @@
-# @vue-sentinel-x/dashboard
+# @amirrr1987/vue-sentinel-x-dashboard
 
 Vue 3 dev dashboard for component graphs, memory, performance, and Intelligence Engine issues.
 
@@ -26,7 +26,7 @@ To load reports from your app, enable `fetchLiveGraph` in `useSentinelData` and 
 │  (browser)      │     window.__SENTINEL__             │
 └─────────────────┘                                     ▼
                                                ┌──────────────────┐
-                                               │  @vue-sentinel-x/ │
+                                               │  @amirrr1987/     │
                                                │  core engine      │
                                                │  → issues list    │
                                                └──────────────────┘

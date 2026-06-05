@@ -9,17 +9,17 @@
       },
     },
     "packages/core": {
-      "name": "@vue-sentinel-x/core",
+      "name": "@amirrr1987/vue-sentinel-x-core",
       "version": "0.1.0",
       "devDependencies": {
         "@types/node": "^22.15.21",
       },
     },
     "packages/dashboard": {
-      "name": "@vue-sentinel-x/dashboard",
+      "name": "@amirrr1987/vue-sentinel-x-dashboard",
       "version": "0.1.0",
       "dependencies": {
-        "@vue-sentinel-x/core": "workspace:*",
+        "@amirrr1987/vue-sentinel-x-core": "workspace:*",
         "vue": "^3.5.16",
       },
       "devDependencies": {
@@ -30,13 +30,13 @@
       },
     },
     "packages/runtime": {
-      "name": "@vue-sentinel-x/runtime",
+      "name": "@amirrr1987/vue-sentinel-x-runtime",
       "version": "0.1.0",
       "dependencies": {
-        "@vue-sentinel-x/core": "^0.1.0",
+        "@amirrr1987/vue-sentinel-x-core": "^0.1.0",
       },
       "devDependencies": {
-        "@vue-sentinel-x/core": "workspace:*",
+        "@amirrr1987/vue-sentinel-x-core": "workspace:*",
         "vue": "^3.5.16",
       },
       "peerDependencies": {
@@ -44,16 +44,16 @@
       },
     },
     "packages/vite-plugin": {
-      "name": "@vue-sentinel-x/vite-plugin",
+      "name": "@amirrr1987/vue-sentinel-x-vite-plugin",
       "version": "0.1.0",
       "dependencies": {
-        "@vue-sentinel-x/core": "^0.1.0",
+        "@amirrr1987/vue-sentinel-x-core": "^0.1.0",
         "@vue/compiler-sfc": "^3.5.16",
         "typescript": "^5.8.3",
       },
       "devDependencies": {
+        "@amirrr1987/vue-sentinel-x-core": "workspace:*",
         "@types/node": "^22.15.21",
-        "@vue-sentinel-x/core": "workspace:*",
         "vite": "^6.3.5",
       },
       "peerDependencies": {
@@ -62,6 +62,14 @@
     },
   },
   "packages": {
+    "@amirrr1987/vue-sentinel-x-core": ["@amirrr1987/vue-sentinel-x-core@workspace:packages/core"],
+
+    "@amirrr1987/vue-sentinel-x-dashboard": ["@amirrr1987/vue-sentinel-x-dashboard@workspace:packages/dashboard"],
+
+    "@amirrr1987/vue-sentinel-x-runtime": ["@amirrr1987/vue-sentinel-x-runtime@workspace:packages/runtime"],
+
+    "@amirrr1987/vue-sentinel-x-vite-plugin": ["@amirrr1987/vue-sentinel-x-vite-plugin@workspace:packages/vite-plugin"],
+
     "@babel/helper-string-parser": ["@babel/helper-string-parser@7.29.7", "", {}, "sha512-Pb5ijPrZ89GDH8223L4UP8i6QApWxs04RbPQJTeWDV0/keR2E36MeKnyr6LYmUUvqRRI+Iv87SuF1W6ErINzYw=="],
 
     "@babel/helper-validator-identifier": ["@babel/helper-validator-identifier@7.29.7", "", {}, "sha512-qehxGkRj55h/ff8EMaJ+cYhyaKlHIxqYDn682wQD7RNp9UujOQsHog2uS0r2vzr4pW+sXf90NeeayjcNaX3fFg=="],
@@ -185,14 +193,6 @@
     "@volar/source-map": ["@volar/source-map@2.4.15", "", {}, "sha512-CPbMWlUN6hVZJYGcU/GSoHu4EnCHiLaXI9n8c9la6RaI9W5JHX+NqG+GSQcB0JdC2FIBLdZJwGsfKyBB71VlTg=="],
 
     "@volar/typescript": ["@volar/typescript@2.4.15", "", { "dependencies": { "@volar/language-core": "2.4.15", "path-browserify": "^1.0.1", "vscode-uri": "^3.0.8" } }, "sha512-2aZ8i0cqPGjXb4BhkMsPYDkkuc2ZQ6yOpqwAuNwUoncELqoy5fRgOQtLR9gB0g902iS0NAkvpIzs27geVyVdPg=="],
-
-    "@vue-sentinel-x/core": ["@vue-sentinel-x/core@workspace:packages/core"],
-
-    "@vue-sentinel-x/dashboard": ["@vue-sentinel-x/dashboard@workspace:packages/dashboard"],
-
-    "@vue-sentinel-x/runtime": ["@vue-sentinel-x/runtime@workspace:packages/runtime"],
-
-    "@vue-sentinel-x/vite-plugin": ["@vue-sentinel-x/vite-plugin@workspace:packages/vite-plugin"],
 
     "@vue/compiler-core": ["@vue/compiler-core@3.5.35", "", { "dependencies": { "@babel/parser": "^7.29.3", "@vue/shared": "3.5.35", "entities": "^7.0.1", "estree-walker": "^2.0.2", "source-map-js": "^1.2.1" } }, "sha512-BUmHaR1J+O+CKZ9uJucdVTEr1LHsdyvv7vG3eNRhK3CczEHeMd/LtsHAuD7PbrxvI2envCY2v7HI1vC1aBRzKw=="],
 

@@ -59,7 +59,7 @@ for (const dir of PUBLISHABLE) {
     const deps = pkg[depField] as Record<string, string> | undefined;
     if (!deps) continue;
     for (const [name, ver] of Object.entries(deps)) {
-      if (name.startsWith("@vue-sentinel-x/") && ver.startsWith("^")) {
+      if (name.startsWith("@amirrr1987/vue-sentinel-x-") && ver.startsWith("^")) {
         deps[name] = `^${next}`;
       }
     }
