@@ -6,14 +6,14 @@ export {
   analyzeVueFile,
   AnalysisStore,
   DependencyGraphBuilder,
-} from "@amirrr1987/vue-sentinel-x-vite-plugin";
+} from "vue-sentinel-x-vite-plugin";
 export type {
   VueSentinelXPluginOptions,
   ComponentGraphFile,
   DependencyGraph,
   ProcessedModule,
   VueFileAnalysis,
-} from "@amirrr1987/vue-sentinel-x-vite-plugin";
+} from "vue-sentinel-x-vite-plugin";
 
 export {
   createRuntime,
@@ -22,12 +22,12 @@ export {
   sentinelMemory,
   sentinelPerformance,
   captureRuntimeSnapshot,
-} from "@amirrr1987/vue-sentinel-x-runtime";
+} from "vue-sentinel-x-runtime";
 export type {
   SentinelRuntime,
   SentinelRuntimeOptions,
   SentinelVuePlugin,
-} from "@amirrr1987/vue-sentinel-x-runtime";
+} from "vue-sentinel-x-runtime";
 
 export {
   resolveConfig,
@@ -40,5 +40,5 @@ export {
   writeReports,
   formatReport,
   formatReportText,
-} from "@amirrr1987/vue-sentinel-x-core";
-export type { SentinelConfig, IntelligenceReport } from "@amirrr1987/vue-sentinel-x-core";
+} from "vue-sentinel-x-core";
+export type { SentinelConfig, IntelligenceReport } from "vue-sentinel-x-core";

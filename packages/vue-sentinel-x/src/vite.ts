@@ -7,7 +7,7 @@ export {
   AnalysisStore,
   DependencyGraphBuilder,
   resolveConfig,
-} from "@amirrr1987/vue-sentinel-x-vite-plugin";
+} from "vue-sentinel-x-vite-plugin";
 export type {
   VueSentinelXPluginOptions,
   ComponentGraphFile,
@@ -15,4 +15,4 @@ export type {
   ProcessedModule,
   VueFileAnalysis,
   SentinelConfig,
-} from "@amirrr1987/vue-sentinel-x-vite-plugin";
+} from "vue-sentinel-x-vite-plugin";

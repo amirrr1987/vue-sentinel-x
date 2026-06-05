@@ -1,1 +1,1 @@
-export * from "@amirrr1987/vue-sentinel-x-core";
+export * from "vue-sentinel-x-core";

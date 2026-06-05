@@ -1,6 +1,6 @@
 {
   "name": "vue-sentinel-x",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Performance and health monitoring for Vue 3 apps — one install for static analysis, runtime tracking, and intelligence reports",
   "keywords": ["vue", "vue3", "vite", "devtools", "performance", "monitoring", "memory-leak"],
   "license": "MIT",
@@ -47,9 +47,9 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@amirrr1987/vue-sentinel-x-core": "^0.1.0",
-    "@amirrr1987/vue-sentinel-x-runtime": "^0.1.0",
-    "@amirrr1987/vue-sentinel-x-vite-plugin": "^0.1.0"
+    "vue-sentinel-x-core": "^0.1.0",
+    "vue-sentinel-x-runtime": "^0.1.0",
+    "vue-sentinel-x-vite-plugin": "^0.1.0"
   },
   "peerDependencies": {
     "vue": "^3.4.0",
